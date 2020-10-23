@@ -16,7 +16,11 @@ def custom_len(input_list):
 
     """
 
-    return 0
+    length = 0
+    for x in input_list:
+        length+=1
+
+    return length
 
 
 # For the next four exercises, you'll need to be clever and think about ways
@@ -43,7 +47,7 @@ def custom_append(input_list, value):
         True
 
     """
-
+    input_list[-1:] = [input_list[-1], value]
     pass
 
 
@@ -62,7 +66,8 @@ def custom_extend(input_list, second_list):
         True
 
     """
-
+    for x in second_list:
+        input_list[-1:] = [input_list[-1], x]
     pass
 
 
@@ -80,7 +85,7 @@ def custom_insert(input_list, index, value):
         True
 
     """
-
+    input_list[index:index] = [value]
     pass
 
 
@@ -99,7 +104,13 @@ def custom_remove(input_list, value):
         True
 
     """
-
+    index = 0
+    for x in input_list:
+        if x == value:
+            input_list[index:index + 1] = []
+            break
+        else:
+            index += 1
     pass
 
 
@@ -118,9 +129,9 @@ def custom_pop(input_list):
         ['Jan', 'Feb']
 
     """
-
-    return None
-
+    input_new=input_list[-1:]
+    return input_new[0]
+    
 
 def custom_index(input_list, value):
     """Return the index of the first item of value found in input_list.
@@ -134,8 +145,14 @@ def custom_index(input_list, value):
         1
 
     """
-
-    return 0
+    index = 0
+    for x in input_list:
+        if x == value:
+            break
+        else:
+            index += 1
+    return index
+    
 
 
 def custom_count(input_list, value):
@@ -151,7 +168,11 @@ def custom_count(input_list, value):
 
     """
 
-    return 0
+    count = 0
+    for x in input_list:
+        if x == value:
+            count += 1
+    return count
 
 
 def custom_reverse(input_list):
