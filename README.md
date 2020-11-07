@@ -1,0 +1,2 @@
+# FriendsDir
+a project
