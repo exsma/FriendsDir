@@ -20,21 +20,27 @@ def create_user(email, password, fname, lname, location):
 
     return user
 
+   
+
 def get_user_by_email(email):
     """Return a user by email."""
 
     return User.query.filter(User.email == email).first()
 
-def create_friend(ffname, flname, dob, location, email, number, notes, portrait, user):
+def get_password_by_email(email):
+    """Return a user by email."""
+
+    return User.query.filter(User.email == email).first().password
+
+def create_friend(ffname, flname, location, friend_email, friend_number, friend_notes, portrait, user):
     """Create and return a new friend."""
 
     friend = Friend(ffname=ffname,
                     flname=flname,
-                    dob=dob,
                     location=location,
-                    email=email,
-                    number=number,
-                    notes=notes,
+                    friend_email=friend_email,
+                    friend_number=friend_number,
+                    friend_notes=friend_notes,
                     portrait=portrait,
                     user=user)
 
@@ -43,10 +49,15 @@ def create_friend(ffname, flname, dob, location, email, number, notes, portrait,
 
     return friend
 
-def get_friends():
+# def get_friends_by_user():
+#     """Return all friends."""
+
+#     return Friend.query.filter(User.user_id == Friend.user_id).all()
+
+def get_friends_by_friend_id(friend_id):
     """Return all friends."""
 
-    return Friend.query.all()
+    return Friend.query.filter(Friend.friend_id == friend_id).first()
 
 
 def create_location(country, state, city):

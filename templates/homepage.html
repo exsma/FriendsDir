@@ -4,46 +4,14 @@
 {% block body %}
 
   <h1>Welcome!</h1>
-  
-  <h2>Create an Account</h2>
-  
-  
+  <p>
+  <a href="createaccount">Create an Account</a>
+  </p>
+  <p>
+  <a href="login">Log In</a>
+  </p>
   <!-- Card -->
 
-          <form action="/register" method="POST">
-            <p>
-              First Name <input type="text" name="fname">
-            </p>
-            <p>
-              Last Name <input type="text" name="lname">
-            </p>
-            <p>
-              Email <input type="text" name="email">
-            </p>
-            <p>
-              Password <input type="password" name="password">
-            </p>
-            <p>
-            <select name="country" class="countries" id="countryId">
-              <option value="">Select Country</option>
-          </select>
-          <select name="state" class="states" id="stateId">
-              <option value="">Select State</option>
-          </select>
-          <select name="city" class="cities" id="cityId">
-              <option value="">Select City</option>
-          </select>
-          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-          <script src="//geodata.solutions/includes/countrystatecity.js"></script>
-        </p>
-            <p>
-              <input type="submit">
-            </p>
-          </form>
-        </p>
     
-      
-  </div>
- 
-</div>
+  
 {% endblock %}

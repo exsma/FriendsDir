@@ -15,9 +15,9 @@ class User(db.Model):
     lname = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
-    location = db.relationship('Location')
+    # location = db.relationship('Location')
 
-    # location = db.relationship('Location', backref='users')
+    location = db.relationship('Location', backref='users')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -30,7 +30,7 @@ class Friend(db.Model):
     friend_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    dob = db.Column(db.DateTime)
+    # dob = db.Column(db.DateTime)
     ffname = db.Column(db.String, nullable=False)
     flname = db.Column(db.String)
     friend_email = db.Column(db.String)
