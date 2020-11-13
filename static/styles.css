@@ -28,4 +28,11 @@
     .navbar-custom .navbar-text { 
            color: BLACK; 
        } 
+
+    .clock {
+        font-family: sans-serif;
+        border: thin solid;
+        border-radius: 10px;
+        padding: 5px;
+      }
         

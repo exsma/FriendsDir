@@ -65,14 +65,15 @@ def handle_login():
 
     email = request.form['email']
     password = request.form['password']
-    provided_password= crud.get_password_by_email(email)
-    if password == provided_password:
-        session['email']=email
-        flash(f'Logged in as {email}')
-        return redirect('/user-homepage')
+    user = crud.get_user_by_email(email)
+    if user:
+        if password == crud.get_password_by_email(email):
+            session['email']=email
+            flash(f'Logged in as {email}')
+            return redirect('/user-homepage')
 
     else:
-        flash('Wrong password!')
+        flash('Wrong password or username!')
         return redirect('/login')
 
 @app.route("/handle-logout")
@@ -108,7 +109,6 @@ def register_friend():
         city = request.form['city']
         state = request.form['state']
         # current_user_email = session['email']
-
         # user_location = crud.create_location(country="USA", city="MN", state="mn")
         friend_location = crud.create_location(country, state, city)
         friends_user = crud.get_user_by_email(session.get('email'))
@@ -144,8 +144,9 @@ def all_friends():
 def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
-    Country = a_friend.location.country
-
+    Country = a_friend.location.country[0]
+    # if Country == "Syrian":
+    #     Country = "Syria"
     import http.client
 
     conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
@@ -161,7 +162,10 @@ def one_friend(friend_id):
     data = res.read()
 
     # news_get1= data.decode("utf-8")
-    news_get=json.loads(data)['articles'][:3]
+    try:
+        news_get=json.loads(data)['articles'][:3]
+    except:
+        news_get=[]
     #print(news_get)
     if "email" in session:
         return render_template('friend-profile.html',a_friend=a_friend, news_get=news_get)
@@ -169,9 +173,6 @@ def one_friend(friend_id):
         return render_template('login.html')
 
         
-
-
-
 
 if __name__ == '__main__':
     connect_to_db(app)
