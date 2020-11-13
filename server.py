@@ -3,6 +3,8 @@ from flask import (Flask, render_template, request, flash, session, redirect)
 from model import connect_to_db
 import crud
 from jinja2 import StrictUndefined
+import json
+# import newsget
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -142,13 +144,32 @@ def all_friends():
 def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
-    
+    Country = a_friend.location.country
+
+    import http.client
+
+    conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
+
+    headers = {
+    'x-rapidapi-key': "0c955f83a1msh510ad75dec49888p1b8b41jsn889f39daf050",
+    'x-rapidapi-host': "google-news.p.rapidapi.com"
+    }
+
+    conn.request("GET", "/v1/geo_headlines?geo="+ Country, headers=headers)
+
+    res = conn.getresponse()
+    data = res.read()
+
+    # news_get1= data.decode("utf-8")
+    news_get=json.loads(data)['articles'][:3]
+    #print(news_get)
     if "email" in session:
-        return render_template('friend-profile.html',a_friend=a_friend)
+        return render_template('friend-profile.html',a_friend=a_friend, news_get=news_get)
     else:
         return render_template('login.html')
 
         
+
 
 
 
