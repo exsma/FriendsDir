@@ -4,6 +4,8 @@ from model import connect_to_db
 import crud
 from jinja2 import StrictUndefined
 import json
+from newsapi import NewsApiClient
+
 # import newsget
 
 app = Flask(__name__)
@@ -118,11 +120,13 @@ def register_friend():
 
 @app.route("/user-homepage")
 def friends_list():
+
     """Return page showing the users friends"""
     list_friend= crud.get_user_by_email(session.get("email")).friends
-    
+    with open("cityMap.json") as c:
+            continents = json.loads(c.read())
     if 'email' in session:
-        return render_template("user-homepage.html", friends=list_friend)
+        return render_template("user-homepage.html", friends=list_friend, continents=continents)
 
     else:
         return render_template("homepage.html")
@@ -131,10 +135,11 @@ def friends_list():
 @app.route('/all-friends')
 def all_friends():
     """View all your friends."""
-    # session["friend_id"] = crud.Friend.friend_id
     friends = crud.Friend.query.filter().all()
+   
     # a_friend = crud.get_friends_by_friend_id(session['friend_id']).first()
     if "email" in session:
+       
         return render_template('user-homepage.html', friends=friends)
     else:
         return render_template('login.html')
@@ -145,8 +150,6 @@ def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
     Country = a_friend.location.country[0]
-    # if Country == "Syrian":
-    #     Country = "Syria"
     import http.client
 
     conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
@@ -166,9 +169,12 @@ def one_friend(friend_id):
         news_get=json.loads(data)['articles'][:3]
     except:
         news_get=[]
-    #print(news_get)
+    print(news_get)
+    newsapi = NewsApiClient(api_key='924f7c4fba0948679273ceec6d5c666c')
+    news_get_1 = newsapi.get_top_headlines(q= Country,
+                                          language='en')
     if "email" in session:
-        return render_template('friend-profile.html',a_friend=a_friend, news_get=news_get)
+        return render_template('friend-profile.html',a_friend=a_friend, news_get=news_get, news_get_1=news_get_1)
     else:
         return render_template('login.html')
 
