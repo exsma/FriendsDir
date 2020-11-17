@@ -59,6 +59,12 @@ def get_friends_by_friend_id(friend_id):
 
     return Friend.query.filter(Friend.friend_id == friend_id).first()
 
+def delete_friend(friend):
+    """delete a friend"""
+    db.session.delete(friend.location)
+    db.session.delete(friend)
+    db.session.commit()
+
 
 def create_location(country, state, city):
     """a location."""

@@ -14,6 +14,12 @@
     height: 100%;
     font-family: 'Numans', sans-serif;
     }
+    .homepage{
+        background-image: url("https://cdn.filtergrade.com/wp-content/uploads/2019/12/28224218/E4160_02-1.jpg");
+        background-size: cover;
+        background-repeat: repeat;
+        height: 100%;
+        }
     
     .container{
     height: 100%;
@@ -31,6 +37,21 @@
     width: 400px;
     background-color: rgba(0,0,0,0.5) !important;
     }
+    .card1{
+        height: 800px;
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 400px;
+        background-color: rgba(0, 0, 0, 0.205) !important;
+        }
+
+    .card2{
+            height: 800px;
+            margin-top: 200px;
+            margin-bottom: auto;
+            width: 550px;
+            background-color: rgba(0, 0, 0, 0.205) !important;
+            }
     
     .social_icon span{
     font-size: 60px;

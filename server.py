@@ -78,6 +78,7 @@ def handle_login():
         flash('Wrong password or username!')
         return redirect('/login')
 
+
 @app.route("/handle-logout")
 def handle_logout():
     """Log user out and say goodbye"""
@@ -91,9 +92,20 @@ def handle_logout():
 
 @app.route('/add-a-friend')
 def add_a_friend_page():
-    """View acount creating."""
+    """handle add a friend page"""
     if "email" in session:
         return render_template('add-a-friend.html')
+    else:
+        return render_template('login.html')
+
+@app.route('/delete-a-friend<friend_id>', methods=['POST'])
+def delete_a_friend_page(friend_id):
+    """delete a friend."""
+    if "email" in session:
+        friend=crud.get_friends_by_friend_id(friend_id)
+        crud.delete_friend(friend)
+        flash('Friend deleted')
+        return redirect("user-homepage")
     else:
         return render_template('login.html')
 
@@ -122,14 +134,15 @@ def register_friend():
 def friends_list():
 
     """Return page showing the users friends"""
-    list_friend= crud.get_user_by_email(session.get("email")).friends
-    with open("cityMap.json") as c:
-            continents = json.loads(c.read())
+    
     if 'email' in session:
+        list_friend= crud.get_user_by_email(session.get("email")).friends
+        with open("cityMap.json") as c:
+            continents = json.loads(c.read())
         return render_template("user-homepage.html", friends=list_friend, continents=continents)
 
     else:
-        return render_template("homepage.html")
+        return redirect('/')
 
 
 @app.route('/all-friends')
@@ -149,32 +162,37 @@ def all_friends():
 def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
-    Country = a_friend.location.country[0]
-    import http.client
+    Country = a_friend.location.country
 
-    conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
+    if Country == 'Syrian Arab Republic':
+        Country = 'Syria'
 
-    headers = {
-    'x-rapidapi-key': "0c955f83a1msh510ad75dec49888p1b8b41jsn889f39daf050",
-    'x-rapidapi-host': "google-news.p.rapidapi.com"
-    }
 
-    conn.request("GET", "/v1/geo_headlines?geo="+ Country, headers=headers)
+    # import http.client
 
-    res = conn.getresponse()
-    data = res.read()
+    # conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
+
+    # headers = {
+    # 'x-rapidapi-key': "0c955f83a1msh510ad75dec49888p1b8b41jsn889f39daf050",
+    # 'x-rapidapi-host': "google-news.p.rapidapi.com"
+    # }
+
+    # conn.request("GET", "/v1/geo_headlines?geo="+ Country, headers=headers)
+
+    # res = conn.getresponse()
+    # data = res.read()
 
     # news_get1= data.decode("utf-8")
-    try:
-        news_get=json.loads(data)['articles'][:3]
-    except:
-        news_get=[]
-    print(news_get)
+    # try:
+    #     news_get=json.loads(data)['articles'][:3]
+    # except:
+    #     news_get=[]
+    
     newsapi = NewsApiClient(api_key='924f7c4fba0948679273ceec6d5c666c')
-    news_get_1 = newsapi.get_top_headlines(q= Country,
-                                          language='en')
+    news_get_1 = newsapi.get_everything(q=Country,language='en')
     if "email" in session:
-        return render_template('friend-profile.html',a_friend=a_friend, news_get=news_get, news_get_1=news_get_1)
+       
+        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country)
     else:
         return render_template('login.html')
 
