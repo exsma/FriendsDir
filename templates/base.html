@@ -14,28 +14,59 @@
     <link rel="stylesheet" href ="/static/styles.css">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="/user-homepage">My Contacts</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- <nav class="navbar navbar-right">
+      
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/handle-logout">Log-Out </a>
-          </li>
-  </ul>
-  <ul class="nav navbar-nav navbar-right">
-          <li class= "nav-item-inline my-2 my-lg-0">
+        
+  <ul class="nav navbar-nav navbar-expand navbar-right">
+          <li class= "nav-item-inline my-2 my-lg-0 navbar-right">
             <a class="navbar-brand" href="/add-a-friend">Add a Friend</a>
           </li>
-          <!-- <li class="nav-item-inline my-2 my-lg-0">
-              <a class="navbar-brand" href="#">Find a Friend</a>
-          </li> -->
-        </ul>
+
+          <li class= "nav-item-inline my-2 my-lg-0 navbar-right">
+            <a class="navbar-brand" href="/handle-logout">Log out</a>
+          </li>
+
+          <li class= "nav-item-inline my-2 my-lg-0 navbar-right">
+            <a class="navbar-brand" href="/user-homepage">My Contacts</a>
+          </li>
+          <span class="navbar-text">
+            Navbar text with an inline element
+          </span>
+          <li class="nav-item my-2 my-lg-0">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+         
+        <!-- </ul>
       </div>
-    </nav>
+    </nav>  -->
+    <nav class="navbar navbar-expand-sm "> 
+      <span class="navbar-text">
+        Friends Directory: Stay  Connected,  not  Distracted
+      </span>
+      <ul class="navbar-nav ml-auto"> 
+          <li class="nav-item"> 
+              <a class="nav-link disabled" id= "logged" aria-hidden="true" href="/user-homepage"> 
+                My Contacts 
+              </a> 
+          </li> 
+          <li class="nav-item"> 
+              <a class="nav-link disabled" id= "logged1"  aria-hidden="true" href="/add-a-friend"> 
+                Add a Friend 
+              </a> 
+          </li> 
+          <li class="nav-item"> 
+              <a class="nav-link disabled" id= "logged2" aria-hidden="true" href="/handle-logout"> 
+                Log out
+              </a> 
+          </li> 
+      </ul> 
+  </nav> 
+
+
+
+
     {% block body %}{% endblock %}
     <script
   src="https://code.jquery.com/jquery-3.5.1.js"
@@ -51,4 +82,23 @@
 
     {% block after_body %}{% endblock %}
   </body>
+
+<script>
+
+if ('{{navbar}}' == 'loggedin'){
+  
+$(document).ready(function () {
+   
+   $('#logged').removeClass('nav-link disabled');
+   $('#logged').addClass('nav-link');
+   $('#logged1').removeClass('nav-link disabled');
+   $('#logged1').addClass('nav-link');
+   $('#logged2').removeClass('nav-link disabled');
+   $('#logged2').addClass('nav-link');
+
+});
+}
+
+
+</script>
 </html>

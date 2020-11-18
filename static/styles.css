@@ -47,7 +47,7 @@
 
     .card2{
             height: 800px;
-            margin-top: 200px;
+            margin-top: auto;
             margin-bottom: auto;
             width: 550px;
             background-color: rgba(0, 0, 0, 0.205) !important;
@@ -136,6 +136,10 @@
            background-color:  #d2d6c7;
 
        }  
+    .navbar1 { 
+        background-color:  #d2d6c7;
+
+    }  
     .navbar .navbar-brand, 
     .navbar-custom .navbar-text { 
            color: BLACK; 
@@ -148,7 +152,7 @@
         padding: 5px;
       }
         
-      .container {
+.container {
         position: relative;
         text-align: center;
         color: white;

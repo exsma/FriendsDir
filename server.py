@@ -19,23 +19,33 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
     """View homepage."""
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
 
-    return render_template('homepage.html')
+    return render_template('homepage.html',navbar=navbar )
 
 
 
 @app.route('/createaccount')
 def create_account():
     """View acount creating."""
-
-    return render_template('createaccount.html')
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+    return render_template('createaccount.html',navbar=navbar)
 
 
 @app.route('/login')
 def Login():
     """View acount creating."""
-
-    return render_template('login.html')
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+    return render_template('login.html',navbar=navbar)
 
 
 @app.route('/register', methods=['POST'])
@@ -49,6 +59,11 @@ def register_user():
     state = request.form['state']
 
     user = crud.get_user_by_email(email)
+    if 'email' in session:
+        navbar ='loggedin'
+    else:
+        navbar='logged out'
+
     if user:
         return 'A user already exists with that email.'
     else:
@@ -59,7 +74,7 @@ def register_user():
 
         return redirect('/login')
 
-
+    
     
 @app.route('/handle-login', methods=['POST'])
 def handle_login():
@@ -68,12 +83,18 @@ def handle_login():
     email = request.form['email']
     password = request.form['password']
     user = crud.get_user_by_email(email)
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
     if user:
         if password == crud.get_password_by_email(email):
             session['email']=email
             flash(f'Logged in as {email}')
             return redirect('/user-homepage')
-
+        else:
+            flash('Wrong password or username!')
+            return redirect('/login')
     else:
         flash('Wrong password or username!')
         return redirect('/login')
@@ -93,21 +114,31 @@ def handle_logout():
 @app.route('/add-a-friend')
 def add_a_friend_page():
     """handle add a friend page"""
-    if "email" in session:
-        return render_template('add-a-friend.html')
+    if 'email' in session:
+        navbar='loggedin'
     else:
-        return render_template('login.html')
+        navbar='logged out'
+
+    if "email" in session:
+        return render_template('add-a-friend.html', navbar=navbar)
+    else:
+        return render_template('login.html',navbar=navbar)
 
 @app.route('/delete-a-friend<friend_id>', methods=['POST'])
 def delete_a_friend_page(friend_id):
     """delete a friend."""
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+
     if "email" in session:
         friend=crud.get_friends_by_friend_id(friend_id)
         crud.delete_friend(friend)
         flash('Friend deleted')
         return redirect("user-homepage")
     else:
-        return render_template('login.html')
+        return render_template('login.html',navbar=navbar)
 
 @app.route('/add-a-friend-new', methods=['POST'])
 def register_friend():
@@ -132,14 +163,18 @@ def register_friend():
 
 @app.route("/user-homepage")
 def friends_list():
-
     """Return page showing the users friends"""
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+
     
     if 'email' in session:
         list_friend= crud.get_user_by_email(session.get("email")).friends
         with open("cityMap.json") as c:
             continents = json.loads(c.read())
-        return render_template("user-homepage.html", friends=list_friend, continents=continents)
+        return render_template("user-homepage.html", friends=list_friend, continents=continents, navbar=navbar)
 
     else:
         return redirect('/')
@@ -151,11 +186,16 @@ def all_friends():
     friends = crud.Friend.query.filter().all()
    
     # a_friend = crud.get_friends_by_friend_id(session['friend_id']).first()
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+
     if "email" in session:
        
-        return render_template('user-homepage.html', friends=friends)
+        return render_template('user-homepage.html', friends=friends,navbar=navbar)
     else:
-        return render_template('login.html')
+        return render_template('login.html',navbar=navbar)
 
 
 @app.route('/all-friends/<friend_id>')
@@ -163,38 +203,24 @@ def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
     Country = a_friend.location.country
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+
 
     if Country == 'Syrian Arab Republic':
         Country = 'Syria'
-
-
-    # import http.client
-
-    # conn = http.client.HTTPSConnection("rapidapi.p.rapidapi.com")
-
-    # headers = {
-    # 'x-rapidapi-key': "0c955f83a1msh510ad75dec49888p1b8b41jsn889f39daf050",
-    # 'x-rapidapi-host': "google-news.p.rapidapi.com"
-    # }
-
-    # conn.request("GET", "/v1/geo_headlines?geo="+ Country, headers=headers)
-
-    # res = conn.getresponse()
-    # data = res.read()
-
-    # news_get1= data.decode("utf-8")
-    # try:
-    #     news_get=json.loads(data)['articles'][:3]
-    # except:
-    #     news_get=[]
+    if Country == 'Turkey':
+        Country = 'Istanbul'
     
     newsapi = NewsApiClient(api_key='924f7c4fba0948679273ceec6d5c666c')
     news_get_1 = newsapi.get_everything(q=Country,language='en')
     if "email" in session:
        
-        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country)
+        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country,navbar=navbar)
     else:
-        return render_template('login.html')
+        return render_template('login.html',navbar=navbar)
 
         
 
