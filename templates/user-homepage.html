@@ -1,0 +1,153 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Friends Directory{% endblock %}
+
+{% block body %}
+
+<body class="homepage1" style="background-image: url('static\background-user.png');">
+<!-- <div class="container">
+  <img src="static\open_notebook.png" alt="Snow" style="width:100%;"> -->
+
+<!-- </div> -->
+
+<div class="parent-container d-flex">
+   <div class="container-fluid">
+    
+    <div class="d-flex justify-content-center h-100">
+   
+      <div class="card1">
+        <div class="card-header">
+          <h3>My Contacts</h3>
+<p name="love_a_melon">
+  
+   {% for friend in friends[:3] %}
+
+  <li>
+    Name: {{friend['ffname']}} <a href="/all-friends/{{friend['friend_id']}}"}>{{friend['ffname']}}</a>
+  </li>
+  <li>
+    email: {{friend['friend_email']}}
+  </li>
+  <li>
+    country: {{friend.location.country}}
+  </li>
+  <li>
+    city: {{friend.location.city}}
+  </li>
+  <li>
+    {% for con in continents %}
+    {%if con['city'] == friend.location['city'] %}
+   
+  <p> <span class="clock" data-timezone= "{{con['timezone']}}" ></span></p>
+  </li>
+  {% endif %}
+  {% endfor %}
+
+
+ 
+  <br>
+
+
+   {% endfor %}
+ </p>
+
+<p> 
+				
+</p>
+				
+</p>
+</div>
+     </div>
+   </div>
+ </div>
+
+ <div class="container-fluid">
+    
+  <div class="d-flex justify-content-center h-100">
+ 
+    <div class="card1">
+      <div class="card-header">
+        <h3>My Contacts</h3>
+<p name="love_a_melon">
+
+ {% for friend in friends[3:6] %}
+
+<li>
+  Name: {{friend['ffname']}} <a href="/all-friends/{{friend['friend_id']}}"}>{{friend['ffname']}}</a>
+</li>
+<li>
+  email: {{friend['friend_email']}}
+</li>
+<li>
+  country: {{friend.location.country}}
+</li>
+<li>
+  city: {{friend.location.city}}
+</li>
+<li>
+  {% for con in continents %}
+  {%if con['city'] == friend.location['city'] %}
+ 
+<p> <span class="clock" data-timezone= "{{con['timezone']}}" ></span></p>
+</li>
+{% endif %}
+{% endfor %}
+
+
+
+<br>
+
+
+ {% endfor %}
+</p>
+
+<p> 
+      
+</p>
+      
+</p>
+</div>
+   </div>
+ </div>
+</div>
+</div>
+</div>
+
+<nav aria-label="...">
+  <ul class="pagination">
+   
+    <li class="page-item"><a class="page-link" href="templates\user-homepage.html">1</a></li>
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="templates\user-homepage-2.html">2 <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="page-item"><a class="page-link" href="templates\user-homepage-2.html">3</a></li>
+   
+  </ul>
+</nav>
+
+</body>
+<script>
+//  
+
+const clocks = document.getElementsByClassName("clock");
+
+function updateClocks() {
+  for (let clock of clocks) {
+    let timezone = clock.dataset.timezone;
+    let time = new Date().toLocaleTimeString("en-US", {
+      hour: '2-digit',
+      minute:'2-digit',
+      second:'2-digit',
+      timeZone: timezone
+    });
+    clock.textContent = time;
+  }
+}
+
+// Update every minute:
+setInterval(updateClocks, 1000);
+updateClocks();
+</script>
+
+{% endblock %}

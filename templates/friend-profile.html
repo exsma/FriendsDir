@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %} Friend Profile {% endblock %}
+
+{% block body %}
+
+<h1>This is {{ a_friend['ffname'] }}'s profile</h1>
+<body class="homepage">
+
+<p><img src="{{a_friend['portrait']}}" width=100 ></p>
+<div>Email: {{ a_friend['friend_email'] }}</div>
+<p>Notes:{{a_friend['friend_notes'] }}</p>
+<p>Phone Number:{{ a_friend['friend_number']}}</p>
+<p>Country: {{a_friend.location.country}}</p>
+
+
+       
+            <form id="form2" runat="server">
+            <div id="resultContainer2">
+            </div>
+            <form id="form1" runat="server">
+                <div id="resultContainer">
+                </div>
+            </form>
+        </form>
+        
+    </br>
+      
+               </ul>
+               <ul>
+                 {% for the_articles in news_get_1['articles'][0:3]%}
+                
+                     <li>News Title: {{the_articles['title']}} </li>
+                <li>News Title: <a href="{{the_articles['url']}}">Read Article</a> </li>
+                <li>Description: {{the_articles['description']}} </li> 
+                   
+                               <br>
+                               {% endfor %}
+
+               <br>
+
+               </ul>
+            </div>
+            </form>
+            <form action="/delete-a-friend{{ a_friend['friend_id']}}" method="post" id="form1">
+                <button type="submit" value="Submit">Delete Friend</button>
+            </form>
+            
+    </body>
+    </html>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="/static/weatherAPI.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+  
+        var resultContainer = $('#resultContainer');
+        var resultContainer2 = $('#resultContainer2');
+        var output = '';
+        
+        const city =  '{{a_friend.location.city}}'
+        const country = '{{a_friend.location.country}}'
+    
+        $(document).ready(function () {
+            console.log(city)
+            // 
+            // console.log(news)
+            $('#resultContainer').ready(GetLocalWeather(city));
+            // $('#btnLocationSearchPremium').click(SearchLocation);
+            $('#resultContainer2').ready(GetTimeZone(city));
+            // $('#Past Weather').click(GetPastWeather);
+            // $('#resultContainer3').ready(format_news(news));
+        });
+     
+        //------------ LOCAL WEATHER ----------------
+    
+        function GetLocalWeather(my_city) {
+
+            var localWeatherInput = {
+                query: my_city ,
+                format: 'JSON',
+                num_of_days: '1',
+                date: '',
+                fx: '',
+                cc: '',
+                tp: '',
+                includelocation: '',
+                show_comments: '',
+                callback: 'LocalWeatherCallback'
+            };
+    
+            JSONP_LocalWeather(localWeatherInput);
+            // e.preventDefault();
+        }
+    
+        function LocalWeatherCallback(localWeather) {
+            console.log(localWeather)
+            output = "<br/> Cloud Cover: " + localWeather.data.current_condition[0].cloudcover;
+            output += "<br/> Humidity: " + localWeather.data.current_condition[0].humidity;
+            output += "<br/> Temp C: " + localWeather.data.current_condition[0].temp_C;
+            output += "<br/> Visibility: " + localWeather.data.current_condition[0].weatherDesc[0].value;
+            output += "<br/> Observation Time: " + localWeather.data.current_condition[0].observation_time;
+            output += "<br/> Pressue: " + localWeather.data.current_condition[0].pressure;
+    
+            // resultContainer.empty();
+            resultContainer.html(output);
+    
+        }
+    
+        //-------------------------------------------
+    
+      //------------ SEARCH LOCATION ----------------
+    
+      function SearchLocation(e) {
+    
+        var searchLocationInput = {
+            query: city ,
+            format: 'JSON',
+            timezone: 'yes',
+            popular: '',
+            num_of_results: '',
+            callback: 'SearchLocationCallback'
+        };
+    
+        JSONP_SearchLocation(searchLocationInput);
+        e.preventDefault();
+        }
+    
+        function SearchLocationCallback(searchLocation) {
+    
+        output = "<br/> Area Name: " + locationSearch.search_API.result[0].areaName[0].value;
+        output += "<br/> Country: " + locationSearch.search_API.result[0].country[0].value;
+        output += "<br/> Latitude: " + locationSearch.search_API.result[0].latitude;
+        output += "<br/> Longitude: " + locationSearch.search_API.result[0].longitude;
+        output += "<br/> Population: " + locationSearch.search_API.result[0].population;
+        output += "<br/> Region: " + locationSearch.search_API.result[0].region[0].value;
+    
+        // resultContainer.empty();
+        resultContainer.html(output);
+    
+        }
+    
+        //-------------------------------------------
+    
+            //------------ TIME ZONE ----------------
+    
+            function GetTimeZone(my_city) {
+    
+                var timeZoneInput = {
+                    query: my_city ,
+                    format: 'JSON',
+                    callback: 'TimeZoneCallback'
+                };
+    
+                JSONP_TimeZone(timeZoneInput);
+                // e.preventDefault();
+            }
+    
+            function TimeZoneCallback(timeZone) {
+    
+                output = "<br/> Local Time: " + timeZone.data.time_zone[0].localtime;
+                output += "<br/> Time Offset: " + timeZone.data.time_zone[0].utcOffset;
+    
+                // resultContainer.empty();
+                resultContainer2.html(output);
+    
+        }
+    
+    
+    
+        //------------ PAST WEATHER ----------------
+    
+        function GetPastWeather(e) {
+    
+            var pastWeatherInput = {
+                query: city ,
+                format: 'JSON',
+                enddate: '2012-03-03',
+                date: '2012-03-01',
+                extra: '',
+                includelocation: '',
+                show_comments: '',
+                callback: 'PastWeatherCallback'
+            };
+    
+            JSONP_PastWeather(pastWeatherInput);
+            e.preventDefault();
+        }
+    
+        function PastWeatherCallback(pastWeather) {
+    
+            output = "<br/> Date: " + pastWeather.data.weather[0].date;
+            output += "<br/> Max Temp(C): " + pastWeather.data.weather[0].maxtempC;
+            output += "<br/> Max Temp(F): " + pastWeather.data.weather[0].maxtempF;
+            output += "<br/> Min Temp(C): " + pastWeather.data.weather[0].mintempC;
+            output += "<br/> Min Temp(F): " + pastWeather.data.weather[0].mintempF;
+            output += "<br/> Cloud Cover: " + pastWeather.data.weather[0].hourly[0].cloudcover;
+    
+            resultContainer.empty();
+            resultContainer.html(output);
+    
+        }
+    
+        //-------------------------------------------
+    </script>
+
+
+
+{% endblock %}

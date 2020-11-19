@@ -14,20 +14,12 @@
     height: 100%;
     font-family: 'Numans', sans-serif;
     }
-#homepage1{
-        background-image: url("static\background-user.png");
-        background-size: cover;
-        background-repeat: repeat;
-        height: 100%;
-        }
-.homepage{
+    .homepage{
         background-image: url("https://cdn.filtergrade.com/wp-content/uploads/2019/12/28224218/E4160_02-1.jpg");
         background-size: cover;
         background-repeat: repeat;
         height: 100%;
         }
-
-  
     
     .container{
     height: 100%;
@@ -61,7 +53,7 @@
             background-color: rgba(0, 0, 0, 0.205) !important;
             }
     
-.social_icon span{
+    .social_icon span{
     font-size: 60px;
     margin-left: 10px;
     color: #d2d6c7;
@@ -126,7 +118,7 @@
     margin-left: 4px;
     }
     
-.body { font-family: "Waiting for the Sunrise"; font-size: 24px; font-style: normal; font-variant: normal;
+    .body { font-family: "Waiting for the Sunrise"; font-size: 24px; font-style: normal; font-variant: normal;
         font-weight: 700; line-height: 26.4px; } 
     h3 { font-family: "Waiting for the Sunrise";
         font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 

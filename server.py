@@ -169,7 +169,8 @@ def friends_list():
     else:
         navbar='logged out'
 
-    
+   # session['displaying'] = 
+
     if 'email' in session:
         list_friend= crud.get_user_by_email(session.get("email")).friends
         with open("cityMap.json") as c:
@@ -190,10 +191,14 @@ def all_friends():
         navbar='loggedin'
     else:
         navbar='logged out'
-
+    if len(friends)>9:
+        status="most"
+    elif len(friends)>6:
+        status="many"
+    else:
+        status="less"
     if "email" in session:
-       
-        return render_template('user-homepage.html', friends=friends,navbar=navbar)
+        return render_template('user-homepage.html', friends=friends,navbar=navbar, status=status)
     else:
         return render_template('login.html',navbar=navbar)
 
@@ -215,10 +220,12 @@ def one_friend(friend_id):
         Country = 'Istanbul'
     
     newsapi = NewsApiClient(api_key='924f7c4fba0948679273ceec6d5c666c')
-    news_get_1 = newsapi.get_everything(q=Country,language='en')
+    news_get_1 = newsapi.get_everything(q=Country, language='en')
     if "email" in session:
-       
-        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country,navbar=navbar)
+        # if session.get('email')== a_friend.user.user_id:
+        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country, navbar=navbar)
+        # else:
+            # return redirect('user-hompage')
     else:
         return render_template('login.html',navbar=navbar)
 
