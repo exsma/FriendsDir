@@ -27,6 +27,11 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+def get_user_by_email_paginate(email):
+    """Return a user by email."""
+
+    return User.query.filter(User.email == email)
+
 def get_password_by_email(email):
     """Return a user by email."""
 
@@ -58,6 +63,7 @@ def get_friends_by_friend_id(friend_id):
     """Return all friends."""
 
     return Friend.query.filter(Friend.friend_id == friend_id).first()
+
 
 def delete_friend(friend):
     """delete a friend"""

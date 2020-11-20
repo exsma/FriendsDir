@@ -1,10 +1,12 @@
 
-from flask import (Flask, render_template, request, flash, session, redirect)
-from model import connect_to_db
+from flask import Flask, render_template, request, flash, session, redirect, url_for
+from model import db, User, Friend, Location, connect_to_db
 import crud
 from jinja2 import StrictUndefined
 import json
 from newsapi import NewsApiClient
+from flask import Blueprint
+import flask_paginate
 
 # import newsget
 
@@ -172,10 +174,21 @@ def friends_list():
    # session['displaying'] = 
 
     if 'email' in session:
+        page = request.args.get('page', 1, type=int)
+        print('=================================')
+        print(page)
+       
+        c_user_id = crud.get_user_by_email(session.get("email")).user_id
+        paginate_list_friend= Friend.query.filter(Friend.user_id == c_user_id).paginate(page=page, per_page=3)
+        
         list_friend= crud.get_user_by_email(session.get("email")).friends
+        # list_friend_paginate= crud.get_user_by_email(session.get("email")).friends
+        
         with open("cityMap.json") as c:
             continents = json.loads(c.read())
-        return render_template("user-homepage.html", friends=list_friend, continents=continents, navbar=navbar)
+        print('===========================================')
+        print (paginate_list_friend)
+        return render_template("user-homepage.html",paginate_list_friend=paginate_list_friend, friends=list_friend, continents=continents, navbar=navbar)
 
     else:
         return redirect('/')
