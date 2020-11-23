@@ -8,14 +8,35 @@ from newsapi import NewsApiClient
 from flask import Blueprint
 import flask_paginate
 
-# import newsget
 
 app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
-
-# Replace this with routes and view functions!
+COUNTRIES= ['Afghanistan', 'Aland', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola', 'Antarctica',
+'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh',
+'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana',
+'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands',
+'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo (Brazzaville)', 'Congo (Kinshasa)',
+'Cook Islands', 'Costa Rica', 'Croatia', 'Cuba', 'Curacao', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica',
+'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia',
+'Falkland Islands', 'Faroe Islands', 'Federated States of Micronesia', 'Fiji', 'Finland', 'France', 'French Polynesia', 'Gabon',
+'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guam', 'Guatemala', 'Guinea', 'Guinea Bissau', 'Guyana',
+'Haiti', 'Honduras', 'Hong Kong S.A.R.', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 
+'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 
+'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau S.A.R', 'Macedonia', 
+'Madagascar', 'Malawi','Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 
+'Mexico', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 
+'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'Northern Cyprus', 'Northern Mariana Islands', 
+'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 
+'Portugal', 'Puerto Rico', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 
+'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 
+'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'Somaliland', 'South Africa', 
+'South Georgia and the Islands', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 
+'Svalbard and Jan Mayen Islands', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 
+'The Bahamas', 'The Gambia', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks and Caicos Islands', 
+'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States Virgin Islands', 'United States of America', 
+'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican (Holy Sea)', 'Venezuela', 'Vietnam', 'Western Sahara', 'Yemen', 'Zambia', 'Zimbabwe']
 
 
 @app.route('/')
@@ -30,6 +51,29 @@ def homepage():
 
 
 
+@app.route("/map/basic")
+def view_basic_map():
+    """Demo of basic map-related code.
+
+    - Programmatically adding markers, info windows, and event handlers to a
+      Google Map
+    - Showing polylines, directions, etc.
+    - Geolocation with HTML5 navigator.geolocate API
+    """
+    if 'email' in session:
+        navbar='loggedin'
+    else:
+        navbar='logged out'
+    friends = crud.get_user_by_email(session.get("email")).friends
+    list_friends = []
+    for friend in friends:
+        locations_friends = friend.location.city
+        list_friends.append(locations_friends)
+    print(list_friends)
+    with open("cityMap.json") as c:
+        location_list = json.loads(c.read())
+    return render_template("google-maps.html", navbar=navbar, location_list=location_list, list_friends =list_friends)
+
 @app.route('/createaccount')
 def create_account():
     """View acount creating."""
@@ -37,7 +81,9 @@ def create_account():
         navbar='loggedin'
     else:
         navbar='logged out'
-    return render_template('createaccount.html',navbar=navbar)
+    with open("cityMap.json") as c:
+        cities = json.loads(c.read())
+    return render_template('createaccount.html',navbar=navbar,countries=COUNTRIES, cities=cities)
 
 
 @app.route('/login')
@@ -58,19 +104,15 @@ def register_user():
     lname = request.form['lname']
     country = request.form['country']
     city = request.form['city']
-    state = request.form['state']
+    
 
     user = crud.get_user_by_email(email)
-    if 'email' in session:
-        navbar ='loggedin'
-    else:
-        navbar='logged out'
 
     if user:
         return 'A user already exists with that email.'
     else:
         # user_location = crud.create_location(country="USA", city="MN", state="mn")
-        my_location = crud.create_location(country, state, city)
+        my_location = crud.create_location(country, city)
         crud.create_user(email, password, fname, lname, my_location)
     
 
@@ -122,7 +164,9 @@ def add_a_friend_page():
         navbar='logged out'
 
     if "email" in session:
-        return render_template('add-a-friend.html', navbar=navbar)
+        with open("cityMap.json") as c:
+            cities = json.loads(c.read())
+        return render_template('add-a-friend.html',countries=COUNTRIES, navbar=navbar,cities=cities)
     else:
         return render_template('login.html',navbar=navbar)
 
@@ -154,10 +198,10 @@ def register_friend():
         portrait = request.form['portrait']
         country = request.form['country']
         city = request.form['city']
-        state = request.form['state']
+        # state = request.form['state']
         # current_user_email = session['email']
         # user_location = crud.create_location(country="USA", city="MN", state="mn")
-        friend_location = crud.create_location(country, state, city)
+        friend_location = crud.create_location(country, city)
         friends_user = crud.get_user_by_email(session.get('email'))
         crud.create_friend(ffname, flname, friend_location, email, friend_number, notes, portrait, friends_user)
         flash('Friend Added')
@@ -175,20 +219,19 @@ def friends_list():
 
     if 'email' in session:
         page = request.args.get('page', 1, type=int)
-        print('=================================')
-        print(page)
        
         c_user_id = crud.get_user_by_email(session.get("email")).user_id
         paginate_list_friend= Friend.query.filter(Friend.user_id == c_user_id).paginate(page=page, per_page=3)
         
-        list_friend= crud.get_user_by_email(session.get("email")).friends
+        friends = crud.Friend.query.filter().all()
+        print("+++++++++++++++++++++++++++++")
+        print(friends)
+        print("+++++++++++++++++++++++++++++")
         # list_friend_paginate= crud.get_user_by_email(session.get("email")).friends
         
         with open("cityMap.json") as c:
             continents = json.loads(c.read())
-        print('===========================================')
-        print (paginate_list_friend)
-        return render_template("user-homepage.html",paginate_list_friend=paginate_list_friend, friends=list_friend, continents=continents, navbar=navbar)
+        return render_template("user-homepage.html",paginate_list_friend=paginate_list_friend, continents=continents, navbar=navbar)
 
     else:
         return redirect('/')

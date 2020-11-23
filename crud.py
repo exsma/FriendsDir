@@ -62,7 +62,7 @@ def create_friend(ffname, flname, location, friend_email, friend_number, friend_
 def get_friends_by_friend_id(friend_id):
     """Return all friends."""
 
-    return Friend.query.filter(Friend.friend_id == friend_id).first()
+    return Friend.query.filter(Friend.friend_id == friend_id).all()
 
 
 def delete_friend(friend):
@@ -72,11 +72,10 @@ def delete_friend(friend):
     db.session.commit()
 
 
-def create_location(country, state, city):
+def create_location(country, city):
     """a location."""
 
     location = Location(country=country, 
-                state= state, 
                 city=city
                 )
 

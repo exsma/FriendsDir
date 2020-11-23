@@ -56,7 +56,6 @@ class Location(db.Model):
                         autoincrement=True,
                         primary_key=True)
     country = db.Column(db.String, nullable=False)
-    state = db.Column(db.String, nullable=False)
     city= db.Column(db.String, nullable=False)
     time_zone=db.Column(db.DateTime)
     

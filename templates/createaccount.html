@@ -56,38 +56,58 @@
 						</div>
 						<input type="password" name="password" class="form-control" placeholder="password">
 					</div>
-
-    <p>
-    <select name="country" class="countries" id="countryId">
-      <option value="">Select Country</option>
-  </select>
-  <select name="state" class="states" id="stateId">
-      <option value="">Select State</option>
-  </select>
-  <select name="city" class="cities" id="cityId">
-      <option value="">Select City</option>
-  </select>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-  <script src="//geodata.solutions/includes/countrystatecity.js"></script>
-</p>
-    
+					<p>
+					<select name="country" class="countries" id="countryId" onchange="myFunction()">
+					{% for con in countries %}
+					<option value="{{con}}">{{con}}</option>
+					{% endfor %}
+					</select> 
+	
+				<select name="city" class="cities" id="cityId">
+					<option value="#">Select City</option>
+				</select>
+				</p>
 					<div class="form-group">
 						<input type="submit" value="submit" class="btn float-right login_btn">
 					</div>
 				</form>
 </p>
 					
-				
-				
-				
-				
-				
+			
 			
 			</div>
 		</div>
 	</div>
 </div>
 </div>
+<script>
+
+
+function myFunction() {
+const jscities = {{cities | tojson}};
+const city_list =[]
+const country = document.getElementById("countryId").value;
+console.log(country)
+// console.log(country)
+  for (con of jscities){
+console.log("hi");
+// 	 console.log(con)
+	
+if (con.country === country ){
+	console.log("hi")
+	console.log(con.city)
+	
+	$('#cityId').append('<option value="'+con.city+'">'+con.city+'</option>');
+	
+  }
+  }
+
+}
+
+
+
+</script>
+
 </body>
 {% endblock %}
 
