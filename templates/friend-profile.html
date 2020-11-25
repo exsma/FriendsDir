@@ -21,6 +21,10 @@
             <form id="form1" runat="server">
                 <div id="resultContainer">
                 </div>
+                <form id="form1" runat="server">
+                    <div id="resultContainer3" src ="">
+                    </form>
+                    </div>
             </form>
         </form>
         
@@ -45,6 +49,8 @@
             <form action="/delete-a-friend{{ a_friend['friend_id']}}" method="post" id="form1">
                 <button type="submit" value="Submit">Delete Friend</button>
             </form>
+
+          
             
     </body>
     </html>
@@ -61,14 +67,14 @@
         const country = '{{a_friend.location.country}}'
     
         $(document).ready(function () {
-            console.log(city)
-            // 
-            // console.log(news)
+            
             $('#resultContainer').ready(GetLocalWeather(city));
             // $('#btnLocationSearchPremium').click(SearchLocation);
             $('#resultContainer2').ready(GetTimeZone(city));
             // $('#Past Weather').click(GetPastWeather);
             // $('#resultContainer3').ready(format_news(news));
+            // $('#resultContainer3').removeClass('nav-link disabled');
+            $('#resultContainer3').attr("src", icon)
         });
      
         //------------ LOCAL WEATHER ----------------
@@ -87,7 +93,8 @@
                 show_comments: '',
                 callback: 'LocalWeatherCallback'
             };
-    
+            console.log(localWeatherInput)
+            console.log('===========================')
             JSONP_LocalWeather(localWeatherInput);
             // e.preventDefault();
         }
@@ -100,10 +107,13 @@
             output += "<br/> Visibility: " + localWeather.data.current_condition[0].weatherDesc[0].value;
             output += "<br/> Observation Time: " + localWeather.data.current_condition[0].observation_time;
             output += "<br/> Pressue: " + localWeather.data.current_condition[0].pressure;
+            output += "<br/> Icon: " + localWeather.data.current_condition[0].weatherIconUrl[0].value;
+            icon =  localWeather.data.current_condition[0].weatherIconUrl[0].value;
     
             // resultContainer.empty();
             resultContainer.html(output);
-    
+            console.log('===========================')
+            console.log(output)
         }
     
         //-------------------------------------------
@@ -200,7 +210,7 @@
     
         }
     
-        //-------------------------------------------
+       
     </script>
 
 

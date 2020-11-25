@@ -34,6 +34,11 @@
                 Log out
               </a> 
           </li> 
+          <li class="nav-item"> 
+            <a class="nav-link disabled" id= "logged3" aria-hidden="true" href="/map/basic"> 
+              map
+            </a> 
+        </li> 
       </ul> 
   </nav> 
 
@@ -68,6 +73,8 @@ $(document).ready(function () {
    $('#logged1').addClass('nav-link');
    $('#logged2').removeClass('nav-link disabled');
    $('#logged2').addClass('nav-link');
+   $('#logged3').removeClass('nav-link disabled');
+   $('#logged3').addClass('nav-link');
 
 });
 }

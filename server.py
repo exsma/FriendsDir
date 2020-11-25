@@ -53,7 +53,7 @@ def homepage():
 
 @app.route("/map/basic")
 def view_basic_map():
-    """Demo of basic map-related code.
+    """map-related code.
 
     - Programmatically adding markers, info windows, and event handlers to a
       Google Map
@@ -224,9 +224,7 @@ def friends_list():
         paginate_list_friend= Friend.query.filter(Friend.user_id == c_user_id).paginate(page=page, per_page=3)
         
         friends = crud.Friend.query.filter().all()
-        print("+++++++++++++++++++++++++++++")
-        print(friends)
-        print("+++++++++++++++++++++++++++++")
+       
         # list_friend_paginate= crud.get_user_by_email(session.get("email")).friends
         
         with open("cityMap.json") as c:

@@ -62,7 +62,7 @@ def create_friend(ffname, flname, location, friend_email, friend_number, friend_
 def get_friends_by_friend_id(friend_id):
     """Return all friends."""
 
-    return Friend.query.filter(Friend.friend_id == friend_id).all()
+    return Friend.query.filter(Friend.friend_id == friend_id).first()
 
 
 def delete_friend(friend):
