@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 {% block title %}Friends Directory{% endblock %}
 
 {% block body %}
 
-<body class="homepage1" style="background-image: url('static\background-user.png');">
+<body class="homepage1">
 <!-- <div class="container">
   <img src="static\open_notebook.png" alt="Snow" style="width:100%;"> -->
 
@@ -38,11 +39,15 @@
     {%if con['city'] == friend.location['city'] %}
    
   <p> <span class="clock" data-timezone= "{{con['timezone']}}" ></span></p>
+  <li>
+    <p> <img src="icon" city= "{{friend.location.city}}" ></img></p>
+  </li>
   </li>
   {% endif %}
   {% endfor %}
  
   <br>
+
 
    {% endfor %}
  </p>
@@ -79,9 +84,11 @@
       {% endif %} {% else %} ... {% endif %} {% endfor %}
 </body>
 <script>
- 
 
 const clocks = document.getElementsByClassName("clock");
+
+const icons = document.getElementsByClassName("icon");
+
 
 function updateClocks() {
   for (let clock of clocks) {
@@ -99,6 +106,50 @@ function updateClocks() {
 // Update every minute:
 setInterval(updateClocks, 1000);
 updateClocks();
+
+
+       
+    
+        $(document).ready(function () {
+            
+            $('#resultContainer').ready(GetLocalWeather(city));
+            // $('#btnLocationSearchPremium').click(SearchLocation);
+            // $('#resultContainer2').ready(GetTimeZone(city));
+            // $('#Past Weather').click(GetPastWeather);
+            // $('#resultContainer3').ready(format_news(news));
+        });
+
+
+function GetLocalWeather(my_city) {
+  for (let icon of icons){
+
+  var localWeatherInput = {
+      query: my_city ,
+      format: 'JSON',
+      num_of_days: '1',
+      date: '',
+      fx: '',
+      cc: '',
+      tp: '',
+      includelocation: '',
+      show_comments: '',
+      callback: 'LocalWeatherCallback'
+  };
+  
+  JSONP_LocalWeather(localWeatherInput);
+  // e.preventDefault();
+}
+
+function LocalWeatherCallback(localWeather) {
+ 
+  output = localWeather.data.current_condition[0].weatherIconUrl[0].value;
+
+ 
+  // resultContainer.html(output);
+  
+}
+}
+
 </script>
 
 {% endblock %}
