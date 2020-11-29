@@ -4,151 +4,113 @@
 
 {% block body %}
 
-<body class="homepage1">
-<!-- <div class="container">
+<body class= "homepage2">
+  <!-- <div class="container">
   <img src="static\open_notebook.png" alt="Snow" style="width:100%;"> -->
 
-<!-- </div> -->
+  <!-- </div> -->
 
-<div class="parent-container d-flex">
-   <div class="container-fluid">
-    
-    <div class="d-flex justify-content-center h-100">
-   
-      <div class="card1">
-        <div class="card-header">
-          <h3>My Contacts</h3>
-<p name="love_a_melon">
-  
-   {% for friend in paginate_list_friend.items %}
+  <div class="parent-container d-flex">
+    <div class="container-fluid">
 
-  <li>
-    Name: {{friend['ffname']}} <a href="/all-friends/{{friend['friend_id']}}">{{friend['ffname']}}</a>
-  </li>
-  <li>
-    email: {{friend['friend_email']}}
-  </li>
-  <li>
-    country: {{friend.location.country}}
-  </li>
-  <li>
-    city: {{friend.location.city}}
-  </li>
-  <li>
-    {% for con in continents %}
-    {%if con['city'] == friend.location['city'] %}
-   
-  <p> <span class="clock" data-timezone= "{{con['timezone']}}" ></span></p>
-  <li>
-    <p> <img src="icon" city= "{{friend.location.city}}" ></img></p>
-  </li>
-  </li>
-  {% endif %}
-  {% endfor %}
- 
-  <br>
+      <div class="d-flex justify-content-center h-100">
+
+        <div class="card1">
+          <div class="card-header">
+            <h3 style="font-style: oblique; font-family: serif; font-size:300%; text-align:center;" >My Contacts</h3>
+            <p name="friends">
+
+               {% for friend in paginate_list_friend.items %}
+
+              <ul>
+                <strong>Name: <a href="/all-friends/{{friend['friend_id']}}">{{friend['ffname']}}</a></strong>
+              </ul>
+              <ul>
+                email: {{friend['friend_email']}}
+              </ul>
+              <ul>
+                country: {{friend.location.country}}
+              </ul>
+              <ul>
+                city: {{friend.location.city}}
+              </ul>
+              <ul>
+                {% for con in continents %}
+                {%if con['city'] == friend.location['city'] %}
+
+                <p> <span class="clock" data-timezone="{{con['timezone']}}"></span></p>
+            
+              </ul>
+              {% endif %}
+              {% endfor %}
+
+              <br>
 
 
-   {% endfor %}
- </p>
+               {% endfor %}
+            </p>
 
-<p> 
-				
-</p>
-				
-</p>
-</div>
-     </div>
-   </div>
- </div>
- 
+            <p>
 
-<p> 
-      
-</p>
-      
-</p>
-</div>
-   </div>
- </div>
-</div>
-</div>
-</div>
-{% for page_num in paginate_list_friend.iter_pages(left_edge=2, right_edge=2,
+            </p>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p>
+
+    </p>
+
+    </p>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <div class= lowerleft>
+  {% for page_num in paginate_list_friend.iter_pages(left_edge=2, right_edge=2,
       left_current=2, right_current=2) %} {% if page_num %} {% if paginate_list_friend.page ==
       page_num %}
       <a href="{{url_for('.friends_list', page=page_num)}}">{{ page_num }}</a>
-  
+
       {% else %}
       <a href="{{url_for('.friends_list', page=page_num)}}">{{ page_num }}</a>
       {% endif %} {% else %} ... {% endif %} {% endfor %}
+</div>
 </body>
+<script src="/static/weatherAPI.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script>
 
-const clocks = document.getElementsByClassName("clock");
+  const clocks = document.getElementsByClassName("clock");
 
-const icons = document.getElementsByClassName("icon");
-
-
-function updateClocks() {
-  for (let clock of clocks) {
-    let timezone = clock.dataset.timezone;
-    let time = new Date().toLocaleTimeString("en-US", {
-      hour: '2-digit',
-      minute:'2-digit',
-      second:'2-digit',
-      timeZone: timezone
-    });
-    clock.textContent = time;
+  function updateClocks() {
+    for (let clock of clocks) {
+      let timezone = clock.dataset.timezone;
+      let time = new Date().toLocaleTimeString("en-US", {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: timezone
+      });
+      clock.textContent = time;
+    }
   }
-}
 
-// Update every minute:
-setInterval(updateClocks, 1000);
-updateClocks();
-
-
-       
-    
-        $(document).ready(function () {
-            
-            $('#resultContainer').ready(GetLocalWeather(city));
-            // $('#btnLocationSearchPremium').click(SearchLocation);
-            // $('#resultContainer2').ready(GetTimeZone(city));
-            // $('#Past Weather').click(GetPastWeather);
-            // $('#resultContainer3').ready(format_news(news));
-        });
+  // Update every minute:
+  setInterval(updateClocks, 1000);
+  updateClocks();
 
 
-function GetLocalWeather(my_city) {
-  for (let icon of icons){
 
-  var localWeatherInput = {
-      query: my_city ,
-      format: 'JSON',
-      num_of_days: '1',
-      date: '',
-      fx: '',
-      cc: '',
-      tp: '',
-      includelocation: '',
-      show_comments: '',
-      callback: 'LocalWeatherCallback'
-  };
-  
-  JSONP_LocalWeather(localWeatherInput);
-  // e.preventDefault();
-}
 
-function LocalWeatherCallback(localWeather) {
- 
-  output = localWeather.data.current_condition[0].weatherIconUrl[0].value;
 
- console.log(output)
-  // resultContainer.html(output);
-  
-}
-}
+
 
 </script>
 

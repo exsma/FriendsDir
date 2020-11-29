@@ -45,7 +45,7 @@ function jsonP(url, callback) {
             console.dir('success');
         },
         error: function (e) {
-            console.log(e.message);
+            console.log(e);
         }
     });
 }

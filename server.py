@@ -7,6 +7,7 @@ import json
 from newsapi import NewsApiClient
 from flask import Blueprint
 import flask_paginate
+# from countries import COUNTRIES
 
 
 app = Flask(__name__)
@@ -54,11 +55,8 @@ def homepage():
 @app.route("/map/basic")
 def view_basic_map():
     """map-related code.
-
     - Programmatically adding markers, info windows, and event handlers to a
       Google Map
-    - Showing polylines, directions, etc.
-    - Geolocation with HTML5 navigator.geolocate API
     """
     if 'email' in session:
         navbar='loggedin'

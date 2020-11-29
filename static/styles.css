@@ -14,10 +14,10 @@
     height: 100%;
     font-family: 'Numans', sans-serif;
     }
-#homepage1{
+.homepage1{
         background-image: url("/static/background-user.png");
         background-size: cover;
-        background-repeat: repeat;
+        background-repeat: no-repeat;
         height: 100%;
         }
 .homepage{
@@ -26,6 +26,15 @@
         background-repeat: repeat;
         height: 100%;
         }
+.homepage2{
+        background-image: url("/static/Notebook-pen-and-coffee-for-web-white-background.png");
+        background-color: #ebedec;
+        background-repeat: no-repeat;
+        max-width: auto;
+        background-size: cover;
+        height: auto;
+        }
+
 
   
     
@@ -35,9 +44,29 @@
     }
     .container1{
         height: 100%;
-        align-content: top center;
+        align-content: center;
         }
-    
+
+    .container3{
+            height: 100%;
+            align-content: center;
+            position: absolute;
+            font-size: large;
+
+            }
+    .lowerleft
+            {
+                
+                position:absolute;
+                bottom:0;
+                right:0;
+                width: 100px;
+                height: 50px;
+                outline: 5px double black;
+                background-color: #d2d6c7;
+                color: black;
+                font-size: large;
+            }
     .card{
     height: 370px;
     margin-top: auto;
