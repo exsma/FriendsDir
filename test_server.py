@@ -1,58 +1,76 @@
-"""Sample test suite for testing demo."""
-
-import server
-import unittest
-
-
-def load_tests(loader, tests, ignore):
-    """Also run our doctests and file-based doctests.
-
-    This function name, ``load_tests``, is required.
-    """
-
-    tests.addTests(doctest.DocTestSuite(arithmetic))
-    tests.addTests(doctest.DocFileSuite("tests.txt"))
-    return tests
+from unittest import TestCase
+from server import app
+from model import connect_to_db, db
+from flask import session
 
 
-class MyAppIntegrationTestCase(unittest.TestCase):
-    """Examples of integration tests: testing Flask server."""
-
-    def test_index(self):
-        client = server.app.test_client()
-        result = client.get('/')
-        self.assertIn(b'<h1>Color Form</h1>', result.data)
-
-    def test_favorite_color_form(self):
-        client = server.app.test_client()
-        result = client.post('/fav-color', data={'color': 'blue'})
-        self.assertIn(b'Woah! I like blue, too', result.data)
-
-
-class MyAppIntegrationTestCase2(unittest.TestCase):
-    """Examples of integration tests: testing Flask server."""
+class FlaskTestsBasic(TestCase):
+    """Flask tests."""
 
     def setUp(self):
-        # print("(setUp ran)")
-        self.client = server.app.test_client()
-        server.app.config['TESTING'] = True
+        """Stuff to do before every test."""
 
-    def tearDown(self):
-        # We don't need to do anything here; we could just
-        # not define this method at all, but we have a stub
-        # here as an example.
-        # print("(tearDown ran)")
-        return
+        self.client = app.test_client()
+        # Show Flask errors that happen during tests
+        app.config['TESTING'] = True
 
     def test_index(self):
-        result = self.client.get('/')
-        self.assertIn(b'<h1>Color Form</h1>', result.data)
+        """Test homepage page."""
 
-    def test_favorite_color_form(self):
-        result = self.client.post('/fav-color', data={'color': 'blue'})
-        self.assertIn(b'Woah! I like blue, too', result.data)
+        result = self.client.get("/")
+        self.assertIn(b"Welcome", result.data)
+
+    def test_login(self):
+        """Test login page."""
+
+        result = self.client.post("/handle-login",
+                                  data={"email": "1@1.com", "password": "password1"},
+                                  follow_redirects=True)
+        self.assertIn(b"My Contacts", result.data)
 
 
-if __name__ == '__main__':
-    # If called like a script, run our tests
+
+class FlaskTestsLoggedIn(TestCase):
+    """Flask tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
+        self.client = app.test_client()
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['email'] = '1@1.com'
+
+    def test_add_friend_page(self):
+        """Test add friend page."""
+
+        result = self.client.get("/add-a-friend")
+        self.assertIn(b"Add a Friend", result.data)
+
+
+class FlaskTestsLoggedOut(TestCase):
+    """Flask tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_important_page(self):
+        """Test that user can't see important page when logged out."""
+
+        result = self.client.get("/add-a-friend", follow_redirects=True)
+        self.assertNotIn(b"Add a Friend", result.data)
+        self.assertIn(b"Sign In", result.data)
+
+
+
+
+if __name__ == "__main__":
+    import unittest
+
     unittest.main()

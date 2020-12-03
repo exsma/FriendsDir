@@ -43,12 +43,7 @@ COUNTRIES= ['Afghanistan', 'Aland', 'Albania', 'Algeria', 'American Samoa', 'And
 @app.route('/')
 def homepage():
     """View homepage."""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
-
-    return render_template('homepage.html',navbar=navbar )
+    return render_template('homepage.html')
 
 
 
@@ -58,10 +53,7 @@ def view_basic_map():
     - Programmatically adding markers, info windows, and event handlers to a
       Google Map
     """
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
+
     friends = crud.get_user_by_email(session.get("email")).friends
     list_friends = []
     for friend in friends:
@@ -70,28 +62,22 @@ def view_basic_map():
     print(list_friends)
     with open("cityMap.json") as c:
         location_list = json.loads(c.read())
-    return render_template("google-maps.html", navbar=navbar, location_list=location_list, list_friends =list_friends)
+    return render_template("google-maps.html", location_list=location_list, list_friends =list_friends)
 
 @app.route('/createaccount')
 def create_account():
     """View acount creating."""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
+
     with open("cityMap.json") as c:
         cities = json.loads(c.read())
-    return render_template('createaccount.html',navbar=navbar,countries=COUNTRIES, cities=cities)
+    return render_template('createaccount.html',countries=COUNTRIES, cities=cities)
 
 
 @app.route('/login')
 def Login():
     """View acount creating."""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
-    return render_template('login.html',navbar=navbar)
+
+    return render_template('login.html')
 
 
 @app.route('/register', methods=['POST'])
@@ -125,10 +111,6 @@ def handle_login():
     email = request.form['email']
     password = request.form['password']
     user = crud.get_user_by_email(email)
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
     if user:
         if password == crud.get_password_by_email(email):
             session['email']=email
@@ -156,33 +138,25 @@ def handle_logout():
 @app.route('/add-a-friend')
 def add_a_friend_page():
     """handle add a friend page"""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
 
     if "email" in session:
         with open("cityMap.json") as c:
             cities = json.loads(c.read())
-        return render_template('add-a-friend.html',countries=COUNTRIES, navbar=navbar,cities=cities)
+        return render_template('add-a-friend.html',countries=COUNTRIES, cities=cities)
     else:
-        return render_template('login.html',navbar=navbar)
+        return render_template('login.html')
 
 @app.route('/delete-a-friend<friend_id>', methods=['POST'])
 def delete_a_friend_page(friend_id):
     """delete a friend."""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
-
+   
     if "email" in session:
         friend=crud.get_friends_by_friend_id(friend_id)
         crud.delete_friend(friend)
         flash('Friend deleted')
         return redirect("user-homepage")
     else:
-        return render_template('login.html',navbar=navbar)
+        return render_template('login.html')
 
 @app.route('/add-a-friend-new', methods=['POST'])
 def register_friend():
@@ -208,12 +182,7 @@ def register_friend():
 @app.route("/user-homepage")
 def friends_list():
     """Return page showing the users friends"""
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
-
-   # session['displaying'] = 
+  
 
     if 'email' in session:
         page = request.args.get('page', 1, type=int)
@@ -227,7 +196,7 @@ def friends_list():
         
         with open("cityMap.json") as c:
             continents = json.loads(c.read())
-        return render_template("user-homepage.html",paginate_list_friend=paginate_list_friend, continents=continents, navbar=navbar)
+        return render_template("user-homepage.html",paginate_list_friend=paginate_list_friend, continents=continents)
 
     else:
         return redirect('/')
@@ -239,10 +208,7 @@ def all_friends():
     friends = crud.Friend.query.filter().all()
    
     # a_friend = crud.get_friends_by_friend_id(session['friend_id']).first()
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
+  
     if len(friends)>9:
         status="most"
     elif len(friends)>6:
@@ -250,9 +216,9 @@ def all_friends():
     else:
         status="less"
     if "email" in session:
-        return render_template('user-homepage.html', friends=friends,navbar=navbar, status=status)
+        return render_template('user-homepage.html', friends=friends,status=status)
     else:
-        return render_template('login.html',navbar=navbar)
+        return render_template('login.html')
 
 
 @app.route('/all-friends/<friend_id>')
@@ -260,11 +226,6 @@ def one_friend(friend_id):
     """View a friend"""
     a_friend = crud.get_friends_by_friend_id(friend_id)
     Country = a_friend.location.country
-    if 'email' in session:
-        navbar='loggedin'
-    else:
-        navbar='logged out'
-
 
     if Country == 'Syrian Arab Republic':
         Country = 'Syria'
@@ -275,11 +236,11 @@ def one_friend(friend_id):
     news_get_1 = newsapi.get_everything(q=Country, language='en')
     if "email" in session:
         # if session.get('email')== a_friend.user.user_id:
-        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country, navbar=navbar)
+        return render_template('friend-profile.html',a_friend=a_friend, news_get_1=news_get_1, Country=Country)
         # else:
             # return redirect('user-hompage')
     else:
-        return render_template('login.html',navbar=navbar)
+        return render_template('login.html')
 
         
 

@@ -78,27 +78,7 @@ def connect_to_db(flask_app, db_uri='postgresql:///friendzati', echo=True):
 if __name__ == '__main__':
     from server import app
 
-    # Call connect_to_db(app, echo=False) if your program output gets
-    # too annoying; this will tell SQLAlchemy not to print out every
-    # query it executes.
+    
 
     connect_to_db(app)
 
-
-# class Timezone(db.Model):
-#     """A geographical location."""
-
-#     __tablename__ = 'timezones'
-
-#     location_id = db.Column(db.Integer,
-#                         autoincrement=True,
-#                         primary_key=True
-#                         nullable=False)
-#     timestamp = db.Column(db.String, nullable=False)
-#     state = db.Column(db.String, nullable=False)
-#     city= db.Column(db.String, nullable=False)
-#     time_zone=db.Column(db.String, )
-    
-
-#     def __repr__(self):
-#         return f'<location country={self.country}>'
