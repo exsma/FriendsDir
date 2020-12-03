@@ -7,16 +7,19 @@
 
 
     <body class="homepage">
-    <div class=container2 >
+    <div  class="new" style="background-image:url('/static/white-background.png'); background-size:100%;" >
+         <center><strong>
+        
+        
     <h1>This is {{ a_friend['ffname'] }}'s profile</h1>
 
-    <p><img src="{{a_friend['portrait']}}" width=100></p>
-    <div>Email: {{ a_friend['friend_email'] }}</div>
-    <p>Notes:{{a_friend['friend_notes'] }}</p>
-    <p>Phone Number:{{ a_friend['friend_number']}}</p>
-    <p>Country: {{a_friend.location.country}}</p>
+    <em><img src="{{a_friend['portrait']}}" width=100></em><br><br>
+    <em>Email: {{ a_friend['friend_email'] }}</em><br><br>
+    <em>Notes:{{a_friend['friend_notes'] }}</em><br><br>
+    <em>Phone Number:{{ a_friend['friend_number']}}</em><br><br>
+    <em>Country: {{a_friend.location.country}}</em><br><br>
 
-
+    </strong>
 
     <form id="form2" runat="server">
         <div id="resultContainer2">
@@ -27,14 +30,15 @@
             <form id="form1" runat="server">
                 <div id="resultContainer3" src="">
             </form>
-            </div>
+            
         </form>
     </form>
 
     </br>
-</div>
-</div>
-    
+    </div>
+
+</center>
+    <h2 class="leafy">Some news from {{ a_friend['ffname'] }}'s  neck of the woods</h2>
     <ul>
          {% for the_articles in news_get_1['articles'][0:3]%}
 
@@ -48,11 +52,12 @@
         <br>
 
     </ul>
-    </div>
+    
     </form>
     <form action="/delete-a-friend{{ a_friend['friend_id']}}" method="post" id="form1">
         <button type="submit" value="Submit">Delete Friend</button>
     </form>
+</div>
 
 
 
@@ -110,7 +115,7 @@
         output += "<br/> Temp C: " + localWeather.data.current_condition[0].temp_C;
         output += "<br/> Visibility: " + localWeather.data.current_condition[0].weatherDesc[0].value;
         output += "<br/> Observation Time: " + localWeather.data.current_condition[0].observation_time;
-        output += "<br/> Pressue: " + localWeather.data.current_condition[0].pressure;
+        output += "<br/> Pressure: " + localWeather.data.current_condition[0].pressure;
         output += "<br/> <img src=" + localWeather.data.current_condition[0].weatherIconUrl[0].value + "></img>";
         // icon =  localWeather.data.current_condition[0].weatherIconUrl[0].value;
 

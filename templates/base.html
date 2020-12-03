@@ -1,84 +1,105 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <title>
-      {% block title %}{% endblock %}
-    </title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    {% block head %}{% endblock %}
-    <link rel="stylesheet" href ="/static/styles.css">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-sm" data-toggle="collapse"> 
-      <span class="navbar-text">
-        Friends Directory: Stay  Connected,  not  Distracted
-      </span>
-      <ul class="navbar-nav ml-auto" data-toggle="collapse"> 
-          <li class="nav-item"> 
-              <a class="nav-link disabled" data-toggle="collapse" id= "logged" aria-hidden="true" href="/user-homepage"> 
-                My Contacts 
-              </a> 
-          </li> 
-          <li class="nav-item" data-toggle="collapse"> 
-              <a class="nav-link disabled" id= "logged1" data-toggle="collapse" aria-hidden="true" href="/add-a-friend"> 
-                Add a Friend 
-              </a> 
-          </li> 
-          <li class="nav-item"> 
-              <a class="nav-link disabled" id= "logged2" data-toggle="collapse" aria-hidden="true" href="/handle-logout"> 
-                Log out
-              </a> 
-          </li> 
-          <li class="nav-item"> 
-            <a class="nav-link disabled" id= "logged3" data-toggle="collapse" aria-hidden="true" href="/map/basic"> 
-              Map
-            </a> 
-        </li> 
-      </ul> 
-  </nav> 
+  <title>
+    {% block title %}{% endblock %}
+  </title>
+
+  {% block head %}{% endblock %}
+  <link rel="stylesheet" href="/static/styles.css">
 
 
 
+  <nav class="navbar navbar-expand-lg navbar- bg-" style="background-color: #d2d6c7;">
+    <span class="navbar-text">
+      Friends  Directory
+    </span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse navbar-right" id="navbarNav">
+      <span class="navbar-text">  : Stay Connected, not  Distracted</span>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        
+          {% if "email" in session %}
+          <li class="nav-item active">
+          <a class="nav-link" href="/handle-logout">Logout</a></li>
+          {% else %}
+          <a class="nav-link" href="/login">Login</a>
+        </li> {% endif %} 
+       
+          {% if "email" in session %}
+          <li class="nav-item active">
 
-    {% block body %}{% endblock %}
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-  
+          <a class="nav-link" href="/user-homepage">My Contacts</a>
+        </li>
+          {% endif %} 
+       
+          {% if "email" in session %}
+          <li class="nav-item active">
+
+          <a class="nav-link" href="/map/basic">Map</a>
+          </li>
+          {% endif %} 
+        <li class="nav-item active">
+
+          {% if "email" in session %}
+          <a class="nav-link" href="/add-a-friend">Add a Friend</a>
+        </li>
+          {% endif %} 
+      </ul>
+    </div>
+  </nav>
+  {% for msg in get_flashed_messages() %}
+  <center>
+  <em class="flash-msg">
+    {{ msg }}
+  </em>
+</center>
+  {% endfor %}
+
+
+  {% block body %}{% endblock %}
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+
 
   {% for msg in get_flashed_messages() %}
   <p class="flash-msg">
     {{ msg }}
   </p>
-{% endfor %}
+  {% endfor %}
 
-    {% block after_body %}{% endblock %}
+  {% block after_body %}{% endblock %}
   </body>
 
-<script>
+  <script>
 
-if ('{{navbar}}' == 'loggedin'){
-  
-$(document).ready(function () {
-   
-   $('#logged').removeClass('nav-link disabled');
-   $('#logged').addClass('nav-link');
-   $('#logged1').removeClass('nav-link disabled');
-   $('#logged1').addClass('nav-link');
-   $('#logged2').removeClass('nav-link disabled');
-   $('#logged2').addClass('nav-link');
-   $('#logged3').removeClass('nav-link disabled');
-   $('#logged3').addClass('nav-link');
+    if ('{{navbar}}' == 'loggedin') {
 
-});
-}
+      $(document).ready(function () {
+
+        $('#logged').removeClass('nav-link disabled');
+        $('#logged').addClass('nav-link');
+        $('#logged1').removeClass('nav-link disabled');
+        $('#logged1').addClass('nav-link');
+        $('#logged2').removeClass('nav-link disabled');
+        $('#logged2').addClass('nav-link');
+        $('#logged3').removeClass('nav-link disabled');
+        $('#logged3').addClass('nav-link');
+
+      });
+    }
 
 
-</script>
+  </script>
+
 </html>

@@ -19,6 +19,20 @@
           <div class="card-header">
             <h3 style="font-style: oblique; font-family: serif; font-size:300%; text-align:center;" >My Contacts</h3>
             <p name="friends">
+              {% if not paginate_list_friend.items %}
+              <div class="d-flex justify-content-center h-100">
+                <center><em>
+                  Looks like you haven't added any friends yet!
+                  <br>
+                  <br>
+                <input type="submit" value="Friend"  class="btn float-center login_btn" onclick="window.location.href='/add-a-friend';">
+                </em>
+              </center>
+                <!-- <div class="container"> -->
+                </div>
+                 
+             
+              {% endif %}
 
                {% for friend in paginate_list_friend.items %}
 

@@ -35,26 +35,40 @@
         height: auto;
         }
 
-
-  
+        em {
+            font-style: italic;
+            font-size: large;
+          }
+        .leafy{
+            color: green;
+            margin-left: 30px;
+        }
+  .new{
+    height: 100%;
+    background-repeat: no-repeat;
+    max-width: auto;
+    background-size: cover;
+    height: auto;
+  }
     
-    .container{
+.container{
     height: 100%;
     align-content: center;
     }
-    .container1{
+.container1{
         height: 100%;
         align-content: center;
         }
 
-    .container3{
+.container3{
             height: 100%;
             align-content: center;
             position: absolute;
             font-size: large;
 
             }
-    .lowerleft
+
+.lowerleft
             {
                 
                 position:absolute;
@@ -73,6 +87,12 @@
     margin-bottom: auto;
     width: 400px;
     background-color: rgba(0,0,0,0.5) !important;
+    }
+
+    .flash-msg{
+        border: thin solid;
+        border-radius: 10px;
+        padding: 5px;
     }
     .card1{
         height: 800px;
@@ -191,6 +211,7 @@
         
 .container {
         position: relative;
+        padding-top: 70px;
         text-align: center;
         color: white;
       }

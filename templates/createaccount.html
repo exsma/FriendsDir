@@ -84,26 +84,22 @@
 
 
 function myFunction() {
-const jscities = {{cities | tojson}};
-const city_list =[]
-const country = document.getElementById("countryId").value;
-console.log(country)
-// console.log(country)
-  for (con of jscities){
-console.log("hi");
-// 	 console.log(con)
-	
-if (con.country === country ){
-	console.log("hi")
-	console.log(con.city)
-	
-	$('#cityId').append('<option value="'+con.city+'">'+con.city+'</option>');
-	
-  }
-  }
-
-}
-
+			$('#cityId').empty();
+			
+		const jscities = {{cities | tojson}};
+		const city_list =[]
+		const ordered_city=[]
+		const country = document.getElementById("countryId").value;
+		  for (con of jscities){
+		if (con.country === country){	
+			ordered_city.push(con.city);
+		  }
+		  }
+		ordered_city.sort();
+		for (const abccity of ordered_city){
+			$('#cityId').append('<option value="'+abccity+'">'+abccity+'</option>');
+		}
+		}
 
 
 </script>
