@@ -6,11 +6,12 @@ if __name__ == '__main__':
     connect_to_db(app)
 
 
-def create_user(email, password, fname, lname, location):
+def create_user(email, key, salt, fname, lname, location):
     """Create and return a new user."""
 
     user = User(email=email, 
-                password=password, 
+                key=key,
+                salt=salt, 
                 fname=fname,   
                 lname=lname,
                 location=location)
@@ -53,11 +54,6 @@ def create_friend(ffname, flname, location, friend_email, friend_number, friend_
     db.session.commit()
 
     return friend
-
-# def get_friends_by_user():
-#     """Return all friends."""
-
-#     return Friend.query.filter(User.user_id == Friend.user_id).all()
 
 def get_friends_by_friend_id(friend_id):
     """Return all friends."""

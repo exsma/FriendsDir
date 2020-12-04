@@ -7,6 +7,8 @@ import json
 from newsapi import NewsApiClient
 from flask import Blueprint
 import flask_paginate
+import hashlib
+import os
 # from countries import COUNTRIES
 
 
@@ -97,7 +99,11 @@ def register_user():
     else:
         # user_location = crud.create_location(country="USA", city="MN", state="mn")
         my_location = crud.create_location(country, city)
-        crud.create_user(email, password, fname, lname, my_location)
+
+        salt = os.urandom(32) # A new salt for this user
+        key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+
+        crud.create_user(email, key, salt, fname, lname, my_location)
     
 
         return redirect('/login')
@@ -112,7 +118,10 @@ def handle_login():
     password = request.form['password']
     user = crud.get_user_by_email(email)
     if user:
-        if password == crud.get_password_by_email(email):
+        salt = user.salt
+        key = user.key
+        new_key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+        if key == new_key:
             session['email']=email
             flash(f'Logged in as {email}')
             return redirect('/user-homepage')

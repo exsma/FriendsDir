@@ -13,7 +13,8 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     fname = db.Column(db.String, nullable=False)
     lname = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    key = db.Column(db.LargeBinary)
+    salt = db.Column(db.LargeBinary)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
     # location = db.relationship('Location')
 
