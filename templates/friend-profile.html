@@ -8,16 +8,16 @@
 
     <body class="homepage">
     <div  class="new" style="background-image:url('/static/white-background.png'); background-size:100%;" >
-         <center><strong>
+         <center>
         
         
     <h1>This is {{ a_friend['ffname'] }}'s profile</h1>
 
     <em><img src="{{a_friend['portrait']}}" width=100></em><br><br>
-    <em>Email: {{ a_friend['friend_email'] }}</em><br><br>
-    <em>Notes:{{a_friend['friend_notes'] }}</em><br><br>
-    <em>Phone Number:{{ a_friend['friend_number']}}</em><br><br>
-    <em>Country: {{a_friend.location.country}}</em><br><br>
+    <em><strong>Email:</strong> {{ a_friend['friend_email'] }}</em><br><br>
+    <em><strong>Notes: </strong> {{ a_friend['friend_notes'] }}</em><br><br>
+    <em><strong>Phone Number: </strong> {{ a_friend['friend_number']}}</em><br><br>
+    <em><strong>Country:</strong> {{a_friend.location.country}}</em><br><br>
 
     </strong>
 
@@ -42,8 +42,8 @@
     <ul>
          {% for the_articles in news_get_1['articles'][0:3]%}
 
-             <li>News Title: {{the_articles['title']}} </li>
-        <li>News Title: <a href="{{the_articles['url']}}">Read Article</a> </li>
+             <li>News  Title: {{the_articles['title']}} </li>
+        <li>News  Link: <a href="{{the_articles['url']}}">Read Article</a> </li>
         <li>Description: {{the_articles['description']}} </li> 
            
                        <br>

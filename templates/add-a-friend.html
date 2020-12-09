@@ -95,7 +95,8 @@
 					
 						<p>
 							<select name="country" class="countries" id="countryId" onchange="myFunction()">
-							{% for con in countries %}
+								<option >Select Country</option>
+								{% for con in countries %}
 							<option value="{{con}}">{{con}}</option>
 							{% endfor %}
 							</select> 
