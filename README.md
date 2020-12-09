@@ -1,7 +1,7 @@
 # FriendsDir
 Friends DIrectory is a low distraction tool that helps you stay connected with friends and family from all of the world.
 
- ![alt text](http:static\first.PNG)
+ ![alt text](http:/static/first.PNG)
 
 
 you can register then add your friends, the user homepage includes dynamically updating clocks,which are  Converted based on utc timing. reflecting the current time in each friend's geographical timezone.
